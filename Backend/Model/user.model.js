@@ -23,7 +23,8 @@ email:{
         type:String,
         required:true,
         unique:true,
-        minlength:[[5,'Email name must be atleast 3 characters long']  ]
+        minlength:[5,'Email name must be atleast 3 characters long' ],
+        match: [/.+@.+\..+/, 'Please enter a valid email address']
     },
     password:{
         type:String,
