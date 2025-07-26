@@ -4,7 +4,7 @@ import { validationResult } from "express-validator";
 
 
 
-const registerUser=async(req,res,next)=>{
+const registerUserController=async(req,res,next)=>{
     const errors=validationResult(req)
     if(!errors.isEmpty()){
         return res.status(400).json({ errors: errors.array() });
@@ -21,5 +21,26 @@ const registerUser=async(req,res,next)=>{
 
 
 }
+const loginUserController=async(req,res,next)=>{
+     const errors=validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const{email,password}=req.body
+    const user=await userModel.findOne({email}).select("+password")
+    if(!user){
+        return res.status(401).json({mesaage:"Invalid email or password"})
+    }
+    const isMatch=await user.comparePassword(password);
+    if(!isMatch){
+        return res.status(401).json({mesaage:"Invalid email or password"})
 
-export default registerUser;
+    }
+    const token=user.generateAuthToken();
+    user.password=undefined
+    res.status(200).json({token,user});
+    
+}
+
+export { registerUserController, loginUserController };
+

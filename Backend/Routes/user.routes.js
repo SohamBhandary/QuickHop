@@ -1,7 +1,8 @@
 import express from "express"
 const router=express.Router()
 import { body } from "express-validator";
-import registerUser from "../Controller/user.controller.js";
+import {registerUserController} from "../Controller/user.controller.js";
+import {loginUserController} from "../Controller/user.controller.js"
 
 router.post("/register",[
     body("email").isEmail().withMessage("Invalid Email"),
@@ -10,8 +11,13 @@ router.post("/register",[
   
 
 
-],  registerUser
+],  registerUserController
      )
+router.post("/login",[body("email").isEmail().withMessage("Invalid Email"),body("password").isLength({min:6}).withMessage("Password incorrect")],
+loginUserController
+
+
+)     
 
 
 
