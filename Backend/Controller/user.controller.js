@@ -1,6 +1,8 @@
+import { blackListTokenModel } from "../Model/blackListToken.model.js";
 import { userModel } from "../Model/user.model.js";
 import createUser from "../Services/user.service.js";
 import { validationResult } from "express-validator";
+import jwt from "jsonwebtoken"
 
 
 
@@ -41,6 +43,19 @@ const loginUserController=async(req,res,next)=>{
     res.status(200).json({token,user});
     
 }
+const getUserProfile=async(req,res,next)=>{
+    res.status(200).json(req.user)
 
-export { registerUserController, loginUserController };
+
+}
+const logOutUser=async(req,res,next)=>{
+    res.clearCookie('token')
+    const token=req.cookies.token || req.headers.authorization
+
+
+    await blackListTokenModel.create({token})
+        res.status(200).json({message:"Logged Out"})
+}
+
+export { registerUserController, loginUserController,getUserProfile,logOutUser };
 

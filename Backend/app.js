@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 import connectTODb from "./DB/db.js";
 import router from "./Routes/user.routes.js";
+import cookieParser from "cookie-parser";
 
 const port=process.env.PORT||3000
 const app=express()
@@ -11,6 +12,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cors())
+app.use(cookieParser())
 connectTODb()
 
 app.get("/",(req,res)=>{
