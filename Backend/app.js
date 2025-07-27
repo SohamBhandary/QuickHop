@@ -4,6 +4,7 @@ import cors from "cors"
 import connectTODb from "./DB/db.js";
 import router from "./Routes/user.routes.js";
 import cookieParser from "cookie-parser";
+import { captainrouter } from "./Routes/captain.routes.js";
 
 const port=process.env.PORT||3000
 const app=express()
@@ -19,6 +20,7 @@ app.get("/",(req,res)=>{
     res.send("ok")
 })
 app.use('/users',router)
+app.use("/captains",captainrouter)
 
 app.listen(port,()=>{console.log(`Sever is running at ${port}`);
 })
